@@ -105,7 +105,9 @@ def dummy_cert(ca, commonname, sans):
         cert.set_version(2)
         cert.add_extensions([OpenSSL.crypto.X509Extension("subjectAltName", True, ss)])
     cert.set_pubkey(ca.get_pubkey())
-    cert.sign(key, "sha1")
+    # BLUECORE: Updating default cert algo to use SHA256 instead of SHA1
+    # Chrome stopped accepting sha1 in Jan 2017
+    cert.sign(key, "sha256")
     return SSLCert(cert)
 
 
